@@ -19,7 +19,7 @@ public class ApiInfo {
         this.api = api;
         this.minVersion = minVersion;
         this.maxVersion = maxVersion;
-        this.path = path.replaceAll("_", "").trim();
+        this.path = path.replaceAll("^_+", "").trim();
         this.requestFormat = requestFormat;
     }
 

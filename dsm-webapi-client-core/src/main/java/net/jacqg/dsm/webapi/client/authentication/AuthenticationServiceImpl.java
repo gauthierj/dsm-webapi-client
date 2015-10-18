@@ -6,7 +6,7 @@ import net.jacqg.dsm.webapi.client.DsmWebapiRequest;
 import net.jacqg.dsm.webapi.client.DsmWebapiResponse;
 import net.jacqg.dsm.webapi.client.apiinfo.ApiInfo;
 import net.jacqg.dsm.webapi.client.apiinfo.ApiInfoService;
-import net.jacqg.dsm.webapi.client.exception.InvalidLoginException;
+import net.jacqg.dsm.webapi.client.authentication.exception.InvalidLoginException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -31,7 +31,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public LoginInformation login(String username, String password, String session) {
+    public LoginInformation login(String username, String password, String session) throws InvalidLoginException {
         DsmWebapiRequest request = new DsmWebapiRequest(apiInfo.getApi(), apiInfo.getMaxVersion(), apiInfo.getPath(), "login")
                 .parameter("account", username)
                 .parameter("passwd", password)
@@ -51,8 +51,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .parameter("session", loginInformation.getSession());
         DsmWebapiResponse response = restClient.call(request, DsmWebapiResponse.class);
         if(!response.isSuccess()) {
-            // TODO handle errors properly
-            throw new IllegalStateException("Could not logout");
+            throw new AssertionError("Cannot happen");
         }
     }
 

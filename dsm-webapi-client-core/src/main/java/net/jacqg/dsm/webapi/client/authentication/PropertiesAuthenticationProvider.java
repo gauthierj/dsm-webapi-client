@@ -5,11 +5,11 @@ import org.springframework.beans.factory.annotation.Value;
 
 public class PropertiesAuthenticationProvider implements AuthenticationProvider {
 
-    @Value("dsm.webapi.username")
+    @Value("${dsm.webapi.username}")
     private String username;
-    @Value("dsm.webapi.password")
+    @Value("${dsm.webapi.password}")
     private String password;
-    @Value("dsm.webapi.session:default")
+    @Value("${dsm.webapi.session:default}")
     private String session;
 
     @Autowired

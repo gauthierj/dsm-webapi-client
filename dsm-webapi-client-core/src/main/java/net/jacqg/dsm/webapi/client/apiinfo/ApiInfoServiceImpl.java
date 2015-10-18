@@ -13,34 +13,47 @@ import java.util.List;
 @Component
 public class ApiInfoServiceImpl implements ApiInfoService {
 
+    private static final String FILESTATION_INFO_API = "SYNO.API.Info";
+    private static final String FILESTATION_INFO_API_VERSION = "1";
+    private static final String FILESTATION_INFO_API_PATH = "query.cgi";
+    private static final String FILESTATION_INFO_API_LIST_METHOD = "query";
+    private static final String ALL_FILES_PARAMETERS = "all";
+    private static final String FILES_PARAMETERS = "query";
+
     @Autowired
     @Qualifier("unauthenticated")
     private DsmWebapiClient restClient;
 
     @Override
     public List<ApiInfo> findAll() {
-        DsmWebapiRequest request = new DsmWebapiRequest("SYNO.API.Info", "1", "query.cgi", "query")
-                .parameter("query", "all");
+        DsmWebapiRequest request = new DsmWebapiRequest(
+                FILESTATION_INFO_API,
+                FILESTATION_INFO_API_VERSION,
+                FILESTATION_INFO_API_PATH,
+                FILESTATION_INFO_API_LIST_METHOD)
+                .parameter(FILES_PARAMETERS, ALL_FILES_PARAMETERS);
         ApiInfoWebapiResponse response = restClient.call(request, ApiInfoWebapiResponse.class);
         if(response.isSuccess()) {
             return response.getData().getApiInfos();
         } else {
-            // TODO handle errors properly
-            throw new IllegalStateException();
+            throw new AssertionError("Cannot happen");
         }
     }
 
     @Override
     public ApiInfo findOne(String api) {
-        DsmWebapiRequest request = new DsmWebapiRequest("SYNO.API.Info", "1", "query.cgi", "query")
-                .parameter("query", api);
+        DsmWebapiRequest request = new DsmWebapiRequest(
+                FILESTATION_INFO_API,
+                FILESTATION_INFO_API_VERSION,
+                FILESTATION_INFO_API_PATH,
+                FILESTATION_INFO_API_LIST_METHOD)
+                .parameter(FILESTATION_INFO_API_LIST_METHOD, api);
         ApiInfoWebapiResponse response = restClient.call(request, ApiInfoWebapiResponse.class);
         if(response.isSuccess()) {
             List<ApiInfo> apiInfos = response.getData().getApiInfos();
             return !apiInfos.isEmpty() ? apiInfos.get(0) : null;
         } else {
-            // TODO handle errors properly
-            throw new IllegalStateException();
+            throw new AssertionError("Cannot happen");
         }
     }
 

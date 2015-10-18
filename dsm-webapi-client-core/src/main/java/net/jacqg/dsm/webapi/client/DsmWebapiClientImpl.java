@@ -1,5 +1,9 @@
 package net.jacqg.dsm.webapi.client;
 
+import net.jacqg.dsm.webapi.client.exception.BadRequestException;
+import net.jacqg.dsm.webapi.client.exception.PermissionDeniedException;
+import net.jacqg.dsm.webapi.client.exception.SessionExpiredException;
+import net.jacqg.dsm.webapi.client.exception.UnknownErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.client.RestTemplate;
@@ -29,10 +33,35 @@ public class DsmWebapiClientImpl implements DsmWebapiClient {
             uriComponentsBuilder.queryParam(entry.getKey(), entry.getValue());
         }
         customizeUri(uriComponentsBuilder);
-        return restTemplate.getForObject(uriComponentsBuilder.toUriString(), responseType);
+        T response = restTemplate.getForObject(uriComponentsBuilder.toUriString(), responseType);
+        handleGenericErrors(response);
+        return response;
     }
 
     public void customizeUri(UriComponentsBuilder uriComponentsBuilder) {
         // Template method
+    }
+
+    private <T extends DsmWebapiResponse<?>> void handleGenericErrors(T response) {
+        if(!response.isSuccess()) {
+            switch (response.getError().getCode()) {
+                case GenericErrorCodes.ERROR_CODE_UNKNOWN_ERROR:
+                    throw new UnknownErrorException();
+                case GenericErrorCodes.ERROR_CODE_NO_PARAMETER:
+                    throw new BadRequestException("No parameter of API, method or version", GenericErrorCodes.ERROR_CODE_NO_PARAMETER);
+                case GenericErrorCodes.ERROR_CODE_API_DOES_NOT_EXISTS:
+                    throw new BadRequestException("The requested API does not exist", GenericErrorCodes.ERROR_CODE_API_DOES_NOT_EXISTS);
+                case GenericErrorCodes.ERROR_CODE_METHOD_DOES_NOT_EXISTS:
+                    throw new BadRequestException("The requested method does not exist", GenericErrorCodes.ERROR_CODE_METHOD_DOES_NOT_EXISTS);
+                case GenericErrorCodes.ERROR_CODE_VERSION_DOES_NOT_SUPPORT_FEATURE:
+                    throw new BadRequestException("The requested version does not support the functionality", GenericErrorCodes.ERROR_CODE_VERSION_DOES_NOT_SUPPORT_FEATURE);
+                case GenericErrorCodes.ERROR_CODE_PERMISSION_DENIED:
+                    throw new PermissionDeniedException();
+                case GenericErrorCodes.ERROR_CODE_SESSION_TIMEOUT:
+                    throw new SessionExpiredException("Session timeout", GenericErrorCodes.ERROR_CODE_SESSION_TIMEOUT);
+                case GenericErrorCodes.ERROR_CODE_DUPLICATE_LOGIN:
+                    throw new SessionExpiredException("Session interrupted by duplicate login", GenericErrorCodes.ERROR_CODE_DUPLICATE_LOGIN);
+            }
+        }
     }
 }

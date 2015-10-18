@@ -29,7 +29,8 @@
 
 	<modules>
 		<module>dsm-webapi-client-core</module>
-        <module>dsm-webapi-client-integration-test</module>
+        <module>dsm-webapi-client-integration-tests</module>
+        <module>dsm-webapi-client-filestation</module>
     </modules>
 
     <dependencyManagement>
@@ -39,6 +40,11 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>dsm-webapi-client-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>dsm-webapi-client-filestation</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
