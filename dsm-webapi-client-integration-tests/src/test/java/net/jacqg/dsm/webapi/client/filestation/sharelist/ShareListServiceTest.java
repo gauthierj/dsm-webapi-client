@@ -1,4 +1,4 @@
-package net.jacqg.dsm.webapi.client.filestation.list;
+package net.jacqg.dsm.webapi.client.filestation.sharelist;
 
 import net.jacqg.dsm.webapi.client.AbstractTest;
 import org.junit.Assert;
@@ -8,14 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class FileStationShareListServiceTest extends AbstractTest {
+public class ShareListServiceTest extends AbstractTest {
 
     @Autowired
-    private FileStationShareListService fileStationShareListService;
+    private ShareListService shareListService;
 
     @Test
     public void testList() throws Exception {
-        List<Share> list = fileStationShareListService.list();
+        List<Share> list = shareListService.list();
         Assert.assertEquals(2, list.size());
         List<String> shareNames = list.stream().map(Share::getName).collect(Collectors.toList());
         Assert.assertTrue(shareNames.contains("home"));

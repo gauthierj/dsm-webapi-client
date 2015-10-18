@@ -1,9 +1,10 @@
-package net.jacqg.dsm.webapi.client.filestation.list;
+package net.jacqg.dsm.webapi.client.filestation.sharelist;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import net.jacqg.dsm.webapi.client.filestation.common.Acl;
 
-public class Permission {
+public class SharePermission {
 
     public enum ShareRight {
         RW, RO;
@@ -17,12 +18,12 @@ public class Permission {
     private final ShareRight shareRight;
 
     @JsonCreator
-    public Permission(@JsonProperty("acl") Acl acl,
-                      @JsonProperty("acl_enbale") boolean aclEnabled,
-                      @JsonProperty("adv_right") SpecialPrivilege specialPrivilege,
-                      @JsonProperty("is_acl_mode") boolean aclMode,
-                      @JsonProperty("posix") int posix,
-                      @JsonProperty("share_right") ShareRight shareRight) {
+    public SharePermission(@JsonProperty("acl") Acl acl,
+                           @JsonProperty("acl_enbale") boolean aclEnabled,
+                           @JsonProperty("adv_right") SpecialPrivilege specialPrivilege,
+                           @JsonProperty("is_acl_mode") boolean aclMode,
+                           @JsonProperty("posix") int posix,
+                           @JsonProperty("share_right") ShareRight shareRight) {
         this.acl = acl;
         this.aclEnabled = aclEnabled;
         this.specialPrivilege = specialPrivilege;
@@ -51,7 +52,7 @@ public class Permission {
         return posix;
     }
 
-    public Permission.ShareRight getShareRight() {
+    public SharePermission.ShareRight getShareRight() {
         return shareRight;
     }
 }

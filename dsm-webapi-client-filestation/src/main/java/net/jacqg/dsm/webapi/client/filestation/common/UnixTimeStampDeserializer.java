@@ -1,4 +1,4 @@
-package net.jacqg.dsm.webapi.client.filestation.list;
+package net.jacqg.dsm.webapi.client.filestation.common;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;

@@ -1,13 +1,15 @@
-package net.jacqg.dsm.webapi.client.filestation.list;
+package net.jacqg.dsm.webapi.client.filestation.sharelist;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import net.jacqg.dsm.webapi.client.filestation.common.TimeInformation;
+import net.jacqg.dsm.webapi.client.filestation.common.User;
 
 public class ShareProperties {
 
     private final String mountPointType;
     private final User owner;
-    private final Permission permission;
+    private final SharePermission sharePermission;
     private final String realPath;
     private final boolean syncShare;
     private final TimeInformation timeInformation;
@@ -16,14 +18,14 @@ public class ShareProperties {
     @JsonCreator
     public ShareProperties(@JsonProperty("mount_point_type") String mountPointType,
                            @JsonProperty("owner") User owner,
-                           @JsonProperty("perm") Permission permission,
+                           @JsonProperty("perm") SharePermission sharePermission,
                            @JsonProperty("real_path") String realPath,
                            @JsonProperty("sync_share") boolean syncShare,
                            @JsonProperty("time") TimeInformation timeInformation,
                            @JsonProperty("volume_status") VolumeStatus volumeStatus) {
         this.mountPointType = mountPointType;
         this.owner = owner;
-        this.permission = permission;
+        this.sharePermission = sharePermission;
         this.realPath = realPath;
         this.syncShare = syncShare;
         this.timeInformation = timeInformation;
@@ -38,8 +40,8 @@ public class ShareProperties {
         return owner;
     }
 
-    public Permission getPermission() {
-        return permission;
+    public SharePermission getSharePermission() {
+        return sharePermission;
     }
 
     public String getRealPath() {

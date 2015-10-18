@@ -1,4 +1,4 @@
-package net.jacqg.dsm.webapi.client.filestation.list;
+package net.jacqg.dsm.webapi.client.filestation.sharelist;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -17,7 +17,7 @@ public class Share {
     @JsonCreator
     public Share(@JsonProperty("path") String path,
                  @JsonProperty("name") String name,
-                 @JsonProperty("isDir") boolean directory,
+                 @JsonProperty("isdir") boolean directory,
                  @JsonProperty("additional") ShareProperties properties) {
         this.path = path;
         this.name = name;
