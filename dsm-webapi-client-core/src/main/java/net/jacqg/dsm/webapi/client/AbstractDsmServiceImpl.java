@@ -23,7 +23,7 @@ public class AbstractDsmServiceImpl {
     }
 
     @PostConstruct
-    public void init() {
+    public final void init() {
         apiInfo = apiInfoService.findOne(apiId);
     }
 

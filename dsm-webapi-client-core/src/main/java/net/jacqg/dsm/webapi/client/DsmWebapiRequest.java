@@ -1,8 +1,13 @@
 package net.jacqg.dsm.webapi.client;
 
+import com.google.common.base.Strings;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 public class DsmWebapiRequest {
 
@@ -42,5 +47,32 @@ public class DsmWebapiRequest {
     public DsmWebapiRequest parameter(String key, String value) {
         this.parameters.put(key, value);
         return this;
+    }
+
+    public DsmWebapiRequest parameter(String key, Object value) {
+        this.parameters.put(key, value.toString());
+        return this;
+    }
+
+    public <T> DsmWebapiRequest optionalParameter(String key, Optional<T> value, Function<T, String> toString) {
+        if(value.isPresent()) {
+            this.parameter(key, toString.apply(value.get()));
+        }
+        return this;
+    }
+
+    public <T> DsmWebapiRequest optionalParameter(String key, Optional<T> value) {
+        return this.optionalParameter(key, value, T::toString);
+    }
+
+    public <T> DsmWebapiRequest optionalParameter(String key, T value, Predicate<T> shouldAdd) {
+        if(shouldAdd.test(value)) {
+            this.parameter(key, value);
+        }
+        return this;
+    }
+
+    public DsmWebapiRequest optionalStringParameter(String key, String value) {
+        return this.optionalParameter(key, value, s -> !Strings.isNullOrEmpty(value));
     }
 }

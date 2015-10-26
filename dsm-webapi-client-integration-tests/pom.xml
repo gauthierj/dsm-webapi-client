@@ -21,6 +21,8 @@
         <test.dsm.webapi.username>dsm-webapi-it</test.dsm.webapi.username>
         <test.dsm.webapi.password>dsm-webapi-it</test.dsm.webapi.password>
         <test.dsm.webapi.session>filestation</test.dsm.webapi.session>
+
+        <test.dsm.webapi.timeZone>Europe/Brussels</test.dsm.webapi.timeZone>
     </properties>
 
     <dependencies>

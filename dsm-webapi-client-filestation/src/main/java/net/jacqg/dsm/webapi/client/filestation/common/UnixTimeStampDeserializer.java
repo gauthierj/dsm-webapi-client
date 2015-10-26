@@ -4,11 +4,10 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.StdScalarDeserializer;
+import net.jacqg.dsm.webapi.client.timezone.TimeZoneUtil;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
 
 public class UnixTimeStampDeserializer extends StdScalarDeserializer<LocalDateTime> {
 
@@ -21,9 +20,7 @@ public class UnixTimeStampDeserializer extends StdScalarDeserializer<LocalDateTi
         JsonToken currentToken = parser.getCurrentToken();
         if(currentToken == JsonToken.VALUE_NUMBER_INT) {
             int valueAsInt = parser.getValueAsInt();
-            // TODO handle time zone
-            ZoneOffset offset = LocalDateTime.now().atZone(ZoneId.of("Europe/Brussels")).getOffset();
-            return LocalDateTime.ofEpochSecond(valueAsInt, 0, offset);
+            return LocalDateTime.ofEpochSecond(valueAsInt, 0, TimeZoneUtil.getOffset());
         }
         return null;
     }
