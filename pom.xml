@@ -27,11 +27,19 @@
         <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
     </properties>
 
-	<modules>
-		<module>dsm-webapi-client-core</module>
-        <module>dsm-webapi-client-integration-tests</module>
+    <modules>
+        <module>dsm-webapi-client-core</module>
         <module>dsm-webapi-client-filestation</module>
     </modules>
+    
+    <profiles>
+    	<profile>
+    	    <id>it</id>
+    	    <modules>
+    	    	<module>dsm-webapi-client-integration-tests</module>
+    	    </modules>
+    	</profile>
+    </profiles>
 
     <dependencyManagement>
         <dependencies>
