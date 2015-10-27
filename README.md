@@ -19,10 +19,10 @@ This is a Spring based library. It is supposed to be used within Spring based ap
 To do so:
 - Import class `DsmWebapiClientConfig` in the application configuration
 - Provide following beans in the application configuration:
-..- An implementation of `DsmUrlProvider` (existing implementations: `PropertiesDsmUrlProvider`)
-..- An implementation of `AuthenticationProvider` (existing implementations: `PropertiesAuthenticationProvider`, `ConsoleAuthenticationProvider`)
-..- An implementation of `TimeZoneProvider` (existing implementations: `PropertiesTimeZoneProvider`, `DefaultTimeZoneProvider`)
-..- A `PropertySourcesPlaceholderConfigurer` if any  `PropertiesXXXProfider` is used.
+  - An implementation of `DsmUrlProvider` (existing implementations: `PropertiesDsmUrlProvider`)
+  - An implementation of `AuthenticationProvider` (existing implementations: `PropertiesAuthenticationProvider`, `ConsoleAuthenticationProvider`)
+  - An implementation of `TimeZoneProvider` (existing implementations: `PropertiesTimeZoneProvider`, `DefaultTimeZoneProvider`)
+  - A `PropertySourcesPlaceholderConfigurer` if any  `PropertiesXXXProfider` is used.
 
 Finally, inject services needed in application classes: search for interfaces `XXXService` corresponding to implemented APIs.
 
