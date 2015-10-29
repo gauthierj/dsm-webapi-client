@@ -46,7 +46,8 @@ This is a Spring based library. It is supposed to be used within Spring based ap
 
 1. Import class `DsmWebapiClientConfig` in the application configuration
 2. Provide implementations of follwing interfaces in the application context
-  1. `DsmUrlProvider`:  provides the URL of Synology DSM server.
+
+### `DsmUrlProvider`:  provides the URL of Synology DSM server.
 
 Existing implementation: `PropertiesDsmUrlProvider`
 This implementation retrieves the URL based on the following properties: 
@@ -55,7 +56,7 @@ This implementation retrieves the URL based on the following properties:
 `dsm.webapi.host`
 `dsm.webapi.port`
 
-  2. `AuthenticationProvider`: provides login and password
+### `AuthenticationProvider`: provides login and password
 
 Existing implementation: `PropertiesAuthenticationProvider`
 This implementation retrieves connection information based on the following properties:
@@ -67,7 +68,7 @@ This implementation retrieves connection information based on the following prop
 Existing implementation: `ConsoleAuthenticationProvider`
 This implentation asks credentials in the console.
 
-  3. `TimeZoneProvider`: provides time zone
+### `TimeZoneProvider`: provides time zone
 
 Existing implementation: `PropertiesTimeZoneProvider`
 
@@ -79,9 +80,9 @@ Existing implementation: `DefaultTimeZoneProvider`
 
 Retrieves system default time zone.
 
-  4. `PropertySourcesPlaceholderConfigurer` if any  `PropertiesXXXProvider` is used.
+### `PropertySourcesPlaceholderConfigurer` if any  `PropertiesXXXProvider` is used.
 
-Here's an example: 
+### Example configuration
 
 ```java
 @Configuration
