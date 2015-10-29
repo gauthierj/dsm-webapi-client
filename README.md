@@ -47,42 +47,45 @@ This is a Spring based library. It is supposed to be used within Spring based ap
 1. Import class `DsmWebapiClientConfig` in the application configuration
 2. Provide implementations of follwing interfaces in the application context
 
-### `DsmUrlProvider`:  provides the URL of Synology DSM server.
+**`DsmUrlProvider`**:  provides the URL of Synology DSM server.
 
 Existing implementation: `PropertiesDsmUrlProvider`
+
 This implementation retrieves the URL based on the following properties: 
 
-`dsm.webapi.scheme`
-`dsm.webapi.host`
-`dsm.webapi.port`
+- `dsm.webapi.scheme`
+- `dsm.webapi.host`
+- `dsm.webapi.port`
 
-### `AuthenticationProvider`: provides login and password
+**`AuthenticationProvider`**: provides login and password
 
 Existing implementation: `PropertiesAuthenticationProvider`
+
 This implementation retrieves connection information based on the following properties:
 
-`dsm.webapi.username`
-`dsm.webapi.password`
-`dsm.webapi.session`
+- `dsm.webapi.username`
+- `dsm.webapi.password`
+- `dsm.webapi.session`
 
 Existing implementation: `ConsoleAuthenticationProvider`
+
 This implentation asks credentials in the console.
 
-### `TimeZoneProvider`: provides time zone
+**`TimeZoneProvider`**: provides time zone
 
 Existing implementation: `PropertiesTimeZoneProvider`
 
 Retrieves time zone form the following property:
 
-`dsm.webapi.timeZone`
+- `dsm.webapi.timeZone`
 
 Existing implementation: `DefaultTimeZoneProvider`
 
 Retrieves system default time zone.
 
-### `PropertySourcesPlaceholderConfigurer` if any  `PropertiesXXXProvider` is used.
+`PropertySourcesPlaceholderConfigurer` if any  `PropertiesXXXProvider` is used.
 
-### Example configuration
+**Example configuration**
 
 ```java
 @Configuration
