@@ -17,8 +17,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -49,34 +47,29 @@ public class SearchServiceImpl extends AbstractDsmServiceImpl implements SearchS
 
     @Override
     public String start(String searchedFolderPath, boolean recursive, SearchCriteria searchCriteria) {
-        DsmWebapiRequest request = null;
-        try {
-            request = new DsmWebapiRequest(getApiId(), "1", getApiInfo().getPath(), "start")
-                    .parameter("folder_path", URLEncoder.encode(searchedFolderPath, "UTF-8"))
-                    .parameter("recursive", Boolean.toString(recursive))
-                    .optionalStringParameter("pattern", Joiner.on(',').join(searchCriteria.getPatterns()))
-                    .optionalStringParameter("extension", Joiner.on(',').join(searchCriteria.getExtensions()))
-                    .optionalParameter("filetype", searchCriteria.getFileType(), FileType::getRepresentation)
-                    .optionalParameter("size_from", searchCriteria.getSizeFrom())
-                    .optionalParameter("size_to", searchCriteria.getSizeTo())
-                    .optionalParameter("mtime_from", searchCriteria.getLastModifiedTimeFrom(), localDateToTimeStringFunction)
-                    .optionalParameter("mtime_to", searchCriteria.getLastModifiedTimeTo(), localDateToTimeStringFunction)
-                    .optionalParameter("crtime_from", searchCriteria.getCreationTimeFrom(), localDateToTimeStringFunction)
-                    .optionalParameter("crtime_to", searchCriteria.getCreationTimeTo(), localDateToTimeStringFunction)
-                    .optionalParameter("atime_from", searchCriteria.getLastAccessTimeFrom(), localDateToTimeStringFunction)
-                    .optionalParameter("atime_to", searchCriteria.getLastAccessTimeTo(), localDateToTimeStringFunction)
-                    .optionalParameter("owner", searchCriteria.getOwnerUserName())
-                    .optionalParameter("group", searchCriteria.getGroupName());
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        DsmWebapiRequest request = new DsmWebapiRequest(getApiId(), "1", getApiInfo().getPath(), "start")
+                .parameter("folder_path", searchedFolderPath)
+                .parameter("recursive", Boolean.toString(recursive))
+                .optionalStringParameter("pattern", Joiner.on(',').join(searchCriteria.getPatterns()))
+                .optionalStringParameter("extension", Joiner.on(',').join(searchCriteria.getExtensions()))
+                .optionalParameter("filetype", searchCriteria.getFileType(), FileType::getRepresentation)
+                .optionalParameter("size_from", searchCriteria.getSizeFrom())
+                .optionalParameter("size_to", searchCriteria.getSizeTo())
+                .optionalParameter("mtime_from", searchCriteria.getLastModifiedTimeFrom(), localDateToTimeStringFunction)
+                .optionalParameter("mtime_to", searchCriteria.getLastModifiedTimeTo(), localDateToTimeStringFunction)
+                .optionalParameter("crtime_from", searchCriteria.getCreationTimeFrom(), localDateToTimeStringFunction)
+                .optionalParameter("crtime_to", searchCriteria.getCreationTimeTo(), localDateToTimeStringFunction)
+                .optionalParameter("atime_from", searchCriteria.getLastAccessTimeFrom(), localDateToTimeStringFunction)
+                .optionalParameter("atime_to", searchCriteria.getLastAccessTimeTo(), localDateToTimeStringFunction)
+                .optionalParameter("owner", searchCriteria.getOwnerUserName())
+                .optionalParameter("group", searchCriteria.getGroupName());
         StartSearchResponse call = getDsmWebapiClient().call(request, StartSearchResponse.class);
         return call.getData().getTaskId();
     }
 
     @Override
     public boolean isFinished(String taskId) {
-        return getResult(taskId, new PaginationAndSorting(0, 0, PaginationAndSorting.Sort.NAME, PaginationAndSorting.SortDirection.ASC)).isFinished();
+        return getResult(taskId, new PaginationAndSorting(0, 1, PaginationAndSorting.Sort.NAME, PaginationAndSorting.SortDirection.ASC)).isFinished();
     }
 
     @Override
@@ -86,7 +79,9 @@ public class SearchServiceImpl extends AbstractDsmServiceImpl implements SearchS
                 .parameter("offset", paginationAndSorting.getOffset())
                 .parameter("limit", paginationAndSorting.getLimit())
                 .parameter("sort_by", paginationAndSorting.getSortBy().getRepresentation())
-                .parameter("sort_direction", paginationAndSorting.getSortDirection().getRepresentation());
+                .parameter("sort_direction", paginationAndSorting.getSortDirection().getRepresentation())
+                .parameter("additional", "real_path,size,owner,time,perm,type")
+                ;
         SearchResultResponse call = getDsmWebapiClient().call(request, SearchResultResponse.class);
         return call.getData();
     }

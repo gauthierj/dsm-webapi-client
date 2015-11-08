@@ -2,7 +2,7 @@ package net.jacqg.dsm.webapi.client.filestation.common;
 
 public class PaginationAndSorting {
 
-    public static final PaginationAndSorting DEFAULT_PAGINATION_AND_SORTING = new PaginationAndSorting(0, Integer.MAX_VALUE, Sort.NAME, SortDirection.ASC);
+    public static final PaginationAndSorting DEFAULT_PAGINATION_AND_SORTING = new PaginationAndSorting(0, -1, Sort.NAME, SortDirection.ASC);
 
     public enum Sort {
 
