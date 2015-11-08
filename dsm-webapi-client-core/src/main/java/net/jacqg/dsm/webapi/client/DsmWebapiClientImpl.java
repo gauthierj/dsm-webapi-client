@@ -28,6 +28,17 @@ public class DsmWebapiClientImpl implements DsmWebapiClient {
 
     @Override
     public <T extends DsmWebapiResponse<?>> T call(DsmWebapiRequest request, Class<T> responseType) {
+        T response = restTemplate.getForObject(buildUri(request), responseType);
+        handleGenericErrors(response);
+        return response;
+    }
+
+    public void customizeUri(UriComponentsBuilder uriComponentsBuilder) {
+        // Template method
+    }
+
+    @Override
+    public URI buildUri(DsmWebapiRequest request) {
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder
                 .fromHttpUrl(dsmUrlProvider.getDsmUrl())
                 .path("webapi/")
@@ -39,13 +50,9 @@ public class DsmWebapiClientImpl implements DsmWebapiClient {
             uriComponentsBuilder.queryParam(entry.getKey(), entry.getValue());
         }
         customizeUri(uriComponentsBuilder);
-        T response = restTemplate.getForObject(buildUri(uriComponentsBuilder), responseType);
-        handleGenericErrors(response);
-        return response;
-    }
-
-    public void customizeUri(UriComponentsBuilder uriComponentsBuilder) {
-        // Template method
+        String url = uriComponentsBuilder.toUriString();
+        int queryStart = url.indexOf("?");
+        return createUriQuietly(url, queryStart);
     }
 
     private <T extends DsmWebapiResponse<?>> void handleGenericErrors(T response) {
@@ -71,10 +78,8 @@ public class DsmWebapiClientImpl implements DsmWebapiClient {
         }
     }
 
-    private URI buildUri(UriComponentsBuilder uriComponentsBuilder) {
-        String url = uriComponentsBuilder.toUriString();
+    private URI createUriQuietly(String url, int queryStart) {
         try {
-            int queryStart = url.indexOf("?");
             return new URI(url.substring(0, queryStart) + url.substring(queryStart).replace("/", "%2F"));
         } catch (URISyntaxException e) {
             throw new IllegalStateException("Could not build uri form url: " + url);

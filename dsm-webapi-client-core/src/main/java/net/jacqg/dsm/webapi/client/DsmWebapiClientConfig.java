@@ -7,9 +7,11 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 @Configuration
@@ -30,9 +32,10 @@ public class DsmWebapiClientConfig {
     @Bean
     public RestTemplate dsmWebapiClientRestTemplate() {
         RestTemplate restTemplate = new RestTemplate();
-        MappingJackson2HttpMessageConverter messageConverter = new MappingJackson2HttpMessageConverter();
-        messageConverter.setSupportedMediaTypes(Collections.singletonList(MediaType.TEXT_PLAIN));
-        restTemplate.setMessageConverters(Collections.singletonList(messageConverter));
+        MappingJackson2HttpMessageConverter jsonMessageConverter = new MappingJackson2HttpMessageConverter();
+        jsonMessageConverter.setSupportedMediaTypes(Collections.singletonList(MediaType.TEXT_PLAIN));
+        ByteArrayHttpMessageConverter byteArrayHttpMessageConverter = new ByteArrayHttpMessageConverter();
+        restTemplate.setMessageConverters(Arrays.asList(jsonMessageConverter, byteArrayHttpMessageConverter));
         restTemplate.setInterceptors(Collections.singletonList(new LoggingInterceptor()));
         restTemplate.setRequestFactory(new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory()));
         return restTemplate;
