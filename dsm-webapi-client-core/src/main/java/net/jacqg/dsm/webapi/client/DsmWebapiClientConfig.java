@@ -1,5 +1,6 @@
 package net.jacqg.dsm.webapi.client;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -35,9 +36,16 @@ public class DsmWebapiClientConfig {
         MappingJackson2HttpMessageConverter jsonMessageConverter = new MappingJackson2HttpMessageConverter();
         jsonMessageConverter.setSupportedMediaTypes(Collections.singletonList(MediaType.TEXT_PLAIN));
         ByteArrayHttpMessageConverter byteArrayHttpMessageConverter = new ByteArrayHttpMessageConverter();
-        restTemplate.setMessageConverters(Arrays.asList(jsonMessageConverter, byteArrayHttpMessageConverter));
+        restTemplate.setMessageConverters(Arrays.asList(
+                jsonMessageConverter,
+                byteArrayHttpMessageConverter));
         restTemplate.setInterceptors(Collections.singletonList(new LoggingInterceptor()));
         restTemplate.setRequestFactory(new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory()));
         return restTemplate;
+    }
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
     }
 }

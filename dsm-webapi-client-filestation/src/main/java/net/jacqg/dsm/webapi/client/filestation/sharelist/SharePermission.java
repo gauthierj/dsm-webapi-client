@@ -7,7 +7,7 @@ import net.jacqg.dsm.webapi.client.filestation.common.Acl;
 public class SharePermission {
 
     public enum ShareRight {
-        RW, RO;
+        RW, RO
     }
 
     private final Acl acl;
@@ -19,7 +19,7 @@ public class SharePermission {
 
     @JsonCreator
     public SharePermission(@JsonProperty("acl") Acl acl,
-                           @JsonProperty("acl_enbale") boolean aclEnabled,
+                           @JsonProperty("acl_enable") boolean aclEnabled,
                            @JsonProperty("adv_right") SpecialPrivilege specialPrivilege,
                            @JsonProperty("is_acl_mode") boolean aclMode,
                            @JsonProperty("posix") int posix,

@@ -18,7 +18,7 @@ public class FileListServiceTest extends AbstractTest{
     @Test
     public void testList() throws Exception {
         List<File> list = fileListService.list("/dsm-webapi-it");
-        Assert.assertEquals(3, list.size());
+        Assert.assertTrue(3 <= list.size());
     }
 
     @Test

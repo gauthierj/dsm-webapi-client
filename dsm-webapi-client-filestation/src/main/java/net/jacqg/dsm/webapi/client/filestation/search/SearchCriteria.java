@@ -149,7 +149,7 @@ public class SearchCriteria {
             return this;
         }
 
-        public SearchCriteriaBuilder creationTimeto(LocalDateTime creationTimeTo) {
+        public SearchCriteriaBuilder creationTimeTo(LocalDateTime creationTimeTo) {
             this.template.creationTimeTo = Optional.of(creationTimeTo);
             return this;
         }
@@ -159,7 +159,7 @@ public class SearchCriteria {
             return this;
         }
 
-        public SearchCriteriaBuilder lastAccessTimeto(LocalDateTime lastAccessTimeTo) {
+        public SearchCriteriaBuilder lastAccessTimeTo(LocalDateTime lastAccessTimeTo) {
             this.template.lastAccessTimeTo = Optional.of(lastAccessTimeTo);
             return this;
         }
