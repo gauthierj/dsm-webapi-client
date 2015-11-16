@@ -154,6 +154,8 @@ Implements FileStation APIs:
 - SYNO.FileStation.Info: `FileStationInformationService`
 - SYNO.FileStation.Search: `SearchService`
 - SYNO.FileStation.Download: `DownloadService`
+- SYNO.FileStation.Upload: `UploadService`
+- SYNO.FileStation.CreateFolder: `CreateFolderService`
 
 Future development :
 - Missing FileStation APIs
