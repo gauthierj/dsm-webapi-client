@@ -38,7 +38,7 @@ public class FileListServiceImpl extends AbstractDsmServiceImpl implements FileL
                         .parameter("goto_path", gotoPath.orElse(""))
                         .parameter("additional", "real_path,size,owner,time,perm,type,mount_point_type")
                 , FileListResponse.class);
-        handleErrors(response);
+        handleErrors(response, folderPath);
         return response.getData();
     }
 
@@ -70,12 +70,12 @@ public class FileListServiceImpl extends AbstractDsmServiceImpl implements FileL
         return files.isEmpty() ? null : files.get(0);
     }
 
-    private void handleErrors(FileListResponse response) {
+    private void handleErrors(FileListResponse response, String folderPath) {
         if(!response.isSuccess()) {
             int errorCode = response.getError().getCode();
             switch (errorCode) {
                 case 408:
-                    throw new FileNotFoundException();
+                    throw new FileNotFoundException(folderPath);
                 default:
                     throw new DsmWebApiErrorException("An error occurred", errorCode);
             }

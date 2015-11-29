@@ -51,7 +51,10 @@ public class ApiInfoServiceImpl implements ApiInfoService {
         ApiInfoWebapiResponse response = restClient.call(request, ApiInfoWebapiResponse.class);
         if(response.isSuccess()) {
             List<ApiInfo> apiInfos = response.getData().getApiInfos();
-            return !apiInfos.isEmpty() ? apiInfos.get(0) : null;
+            if(apiInfos.isEmpty()) {
+                throw new ApiNotFoundException(api);
+            }
+            return apiInfos.get(0);
         } else {
             throw new AssertionError("Cannot happen");
         }

@@ -30,4 +30,11 @@ public class ApiInfoServiceTest extends AbstractTest {
         Assert.assertEquals("entry.cgi", one.getPath());
         Assert.assertEquals("JSON", one.getRequestFormat());
     }
+
+    @Test(expected = ApiNotFoundException.class)
+    public void testFindOneNotExisting() {
+        apiInfoService.findOne("not-existing");
+    }
+
+
 }

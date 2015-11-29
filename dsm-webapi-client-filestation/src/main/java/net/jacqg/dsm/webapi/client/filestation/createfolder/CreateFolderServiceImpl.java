@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import net.jacqg.dsm.webapi.client.AbstractDsmServiceImpl;
 import net.jacqg.dsm.webapi.client.DsmWebapiRequest;
 import net.jacqg.dsm.webapi.client.DsmWebapiResponse;
-import net.jacqg.dsm.webapi.client.exception.DsmWebApiErrorException;
 import net.jacqg.dsm.webapi.client.filestation.exception.CouldNotCreateFolderException;
 import net.jacqg.dsm.webapi.client.filestation.filelist.File;
 import org.springframework.stereotype.Component;
@@ -40,14 +39,7 @@ public class CreateFolderServiceImpl extends AbstractDsmServiceImpl implements C
     private void handleErrors(String parentPath, String name, boolean createParents, CreateFolderResponse response) {
         if(!response.isSuccess()) {
             int errorCode = response.getError().getCode();
-            switch (errorCode) {
-                case 1100:
-                    throw new CouldNotCreateFolderException(parentPath, name, createParents, 1100);
-                case 1101:
-                    throw new CouldNotCreateFolderException(parentPath, name, createParents, 1101);
-                default:
-                    throw new DsmWebApiErrorException("An error occurred", errorCode);
-            }
+            throw new CouldNotCreateFolderException(parentPath, name, createParents, errorCode);
         }
     }
 
