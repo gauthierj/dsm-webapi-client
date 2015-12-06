@@ -26,7 +26,7 @@ public class TimeZoneUtil implements ApplicationContextAware {
     }
 
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    public synchronized void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         instance = applicationContext.getBean(TimeZoneUtil.class);
     }
 }

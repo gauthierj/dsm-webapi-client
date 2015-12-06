@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Joiner;
 import com.jayway.awaitility.core.ConditionTimeoutException;
 import net.jacqg.dsm.webapi.client.AbstractDsmServiceImpl;
+import net.jacqg.dsm.webapi.client.DsmWebApiResponseError;
 import net.jacqg.dsm.webapi.client.DsmWebapiRequest;
 import net.jacqg.dsm.webapi.client.DsmWebapiResponse;
 import net.jacqg.dsm.webapi.client.filestation.common.FileType;
@@ -163,14 +164,14 @@ public class SearchServiceImpl extends AbstractDsmServiceImpl implements SearchS
 
     public static class StartSearchResponse extends DsmWebapiResponse<TaskId> {
 
-        public StartSearchResponse(@JsonProperty("success") boolean success, @JsonProperty("data") TaskId data, @JsonProperty("error") Error error) {
+        public StartSearchResponse(@JsonProperty("success") boolean success, @JsonProperty("data") TaskId data, @JsonProperty("error") DsmWebApiResponseError error) {
             super(success, data, error);
         }
     }
 
     public static class SearchResultResponse extends DsmWebapiResponse<SearchResult> {
 
-        public SearchResultResponse(@JsonProperty("success") boolean success, @JsonProperty("data") SearchResult data, @JsonProperty("error") Error error) {
+        public SearchResultResponse(@JsonProperty("success") boolean success, @JsonProperty("data") SearchResult data, @JsonProperty("error") DsmWebApiResponseError error) {
             super(success, data, error);
         }
     }

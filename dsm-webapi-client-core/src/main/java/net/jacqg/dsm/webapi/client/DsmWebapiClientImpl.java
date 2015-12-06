@@ -4,8 +4,6 @@ import net.jacqg.dsm.webapi.client.exception.BadRequestException;
 import net.jacqg.dsm.webapi.client.exception.PermissionDeniedException;
 import net.jacqg.dsm.webapi.client.exception.SessionExpiredException;
 import net.jacqg.dsm.webapi.client.exception.UnknownErrorException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.client.RestTemplate;
@@ -16,8 +14,6 @@ import java.net.URISyntaxException;
 import java.util.Map;
 
 public class DsmWebapiClientImpl implements DsmWebapiClient {
-
-    private static final Logger logger = LoggerFactory.getLogger(DsmWebapiClientImpl.class);
 
     @Autowired
     @Qualifier("dsmWebapiClientRestTemplate")
@@ -74,6 +70,8 @@ public class DsmWebapiClientImpl implements DsmWebapiClient {
                     throw new SessionExpiredException("Session timeout", GenericErrorCodes.ERROR_CODE_SESSION_TIMEOUT);
                 case GenericErrorCodes.ERROR_CODE_DUPLICATE_LOGIN:
                     throw new SessionExpiredException("Session interrupted by duplicate login", GenericErrorCodes.ERROR_CODE_DUPLICATE_LOGIN);
+                default:
+                    //skip
             }
         }
     }
@@ -82,7 +80,7 @@ public class DsmWebapiClientImpl implements DsmWebapiClient {
         try {
             return new URI(url.substring(0, queryStart) + url.substring(queryStart).replace("/", "%2F"));
         } catch (URISyntaxException e) {
-            throw new IllegalStateException("Could not build uri form url: " + url);
+            throw new IllegalStateException("Could not build uri form url: " + url, e);
         }
     }
 }

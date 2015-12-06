@@ -35,6 +35,4 @@ public class ApiInfoServiceTest extends AbstractTest {
     public void testFindOneNotExisting() {
         apiInfoService.findOne("not-existing");
     }
-
-
 }

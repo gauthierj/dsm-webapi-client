@@ -1,6 +1,7 @@
 package net.jacqg.dsm.webapi.client.authentication;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import net.jacqg.dsm.webapi.client.DsmWebApiResponseError;
 import net.jacqg.dsm.webapi.client.DsmWebapiClient;
 import net.jacqg.dsm.webapi.client.DsmWebapiRequest;
 import net.jacqg.dsm.webapi.client.DsmWebapiResponse;
@@ -57,7 +58,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private static class LoginWebapiResponse extends DsmWebapiResponse<LoginInformation> {
 
-        public LoginWebapiResponse(@JsonProperty("success") boolean success, @JsonProperty("data") LoginInformation data, @JsonProperty("error") Error error) {
+        public LoginWebapiResponse(@JsonProperty("success") boolean success, @JsonProperty("data") LoginInformation data, @JsonProperty("error") DsmWebApiResponseError error) {
             super(success, data, error);
         }
     }

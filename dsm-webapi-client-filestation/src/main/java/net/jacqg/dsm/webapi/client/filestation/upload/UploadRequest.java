@@ -1,6 +1,7 @@
 package net.jacqg.dsm.webapi.client.filestation.upload;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Optional;
 
 public class UploadRequest {
@@ -21,13 +22,13 @@ public class UploadRequest {
     private UploadRequest(String parentFolderPath, String fileName, byte[] content) {
         this.parentFolderPath = parentFolderPath;
         this.fileName = fileName;
-        this.content = content;
+        this.content = Arrays.copyOf(content, content.length);
     }
 
     private UploadRequest(UploadRequest uploadRequest) {
         this.parentFolderPath = uploadRequest.getParentFolderPath();
         this.fileName = uploadRequest.getFileName();
-        this.content = uploadRequest.getContent();
+        this.content = Arrays.copyOf(uploadRequest.getContent(), uploadRequest.getContent().length);
         this.overwriteBehavior = uploadRequest.getOverwriteBehavior();
         this.createParents = uploadRequest.isCreateParents();
         this.lastAccessTime = uploadRequest.getLastAccessTime();
@@ -44,7 +45,7 @@ public class UploadRequest {
     }
 
     public byte[] getContent() {
-        return content;
+        return Arrays.copyOf(content, content.length);
     }
 
     public OverwriteBehavior getOverwriteBehavior() {

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ApiInfo {
@@ -28,7 +29,7 @@ public class ApiInfo {
     }
 
     @JsonCreator
-    private ApiInfo(
+    public ApiInfo(
             @JsonProperty("minVersion") String minVersion,
             @JsonProperty("maxVersion") String maxVersion,
             @JsonProperty("path") String path,
@@ -58,7 +59,7 @@ public class ApiInfo {
 
     public static class ApiInfoList {
 
-        private List<ApiInfo> apiInfos = new ArrayList<>();
+        private final List<ApiInfo> apiInfos = new ArrayList<>();
 
         @JsonAnySetter
         public void add(String key, ApiInfo value) {
@@ -66,7 +67,7 @@ public class ApiInfo {
         }
 
         public List<ApiInfo> getApiInfos() {
-            return apiInfos;
+            return Collections.unmodifiableList(apiInfos);
         }
     }
 }

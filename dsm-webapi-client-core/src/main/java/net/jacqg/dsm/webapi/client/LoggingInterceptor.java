@@ -1,5 +1,6 @@
 package net.jacqg.dsm.webapi.client;
 
+import net.jacqg.dsm.webapi.client.exception.DsmWebApiClientException;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +28,7 @@ public class LoggingInterceptor implements ClientHttpRequestInterceptor {
             LOGGER.debug("Request body: {}", new String(body));
             LOGGER.debug("Response body: {}", IOUtils.toString(response.getBody()));
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new DsmWebApiClientException("Could not read response", e);
         }
     }
 }

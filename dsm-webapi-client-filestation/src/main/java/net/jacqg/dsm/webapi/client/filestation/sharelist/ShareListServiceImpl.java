@@ -2,6 +2,7 @@ package net.jacqg.dsm.webapi.client.filestation.sharelist;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import net.jacqg.dsm.webapi.client.AbstractDsmServiceImpl;
+import net.jacqg.dsm.webapi.client.DsmWebApiResponseError;
 import net.jacqg.dsm.webapi.client.DsmWebapiRequest;
 import net.jacqg.dsm.webapi.client.DsmWebapiResponse;
 import net.jacqg.dsm.webapi.client.filestation.common.PaginationAndSorting;
@@ -42,7 +43,7 @@ public class ShareListServiceImpl extends AbstractDsmServiceImpl implements Shar
 
     private static class ShareListResponse extends DsmWebapiResponse<Share.ShareList> {
 
-        public ShareListResponse(@JsonProperty("success") boolean success, @JsonProperty("data") Share.ShareList data, @JsonProperty("error") Error error) {
+        public ShareListResponse(@JsonProperty("success") boolean success, @JsonProperty("data") Share.ShareList data, @JsonProperty("error") DsmWebApiResponseError error) {
             super(success, data, error);
         }
     }

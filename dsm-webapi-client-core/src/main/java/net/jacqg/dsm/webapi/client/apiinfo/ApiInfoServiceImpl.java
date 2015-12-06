@@ -1,6 +1,7 @@
 package net.jacqg.dsm.webapi.client.apiinfo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import net.jacqg.dsm.webapi.client.DsmWebApiResponseError;
 import net.jacqg.dsm.webapi.client.DsmWebapiClient;
 import net.jacqg.dsm.webapi.client.DsmWebapiRequest;
 import net.jacqg.dsm.webapi.client.DsmWebapiResponse;
@@ -62,7 +63,7 @@ public class ApiInfoServiceImpl implements ApiInfoService {
 
     private static class ApiInfoWebapiResponse extends DsmWebapiResponse<ApiInfo.ApiInfoList> {
 
-        public ApiInfoWebapiResponse(@JsonProperty("success") boolean success, @JsonProperty("data") ApiInfo.ApiInfoList data, @JsonProperty("error") Error error) {
+        public ApiInfoWebapiResponse(@JsonProperty("success") boolean success, @JsonProperty("data") ApiInfo.ApiInfoList data, @JsonProperty("error") DsmWebApiResponseError error) {
             super(success, data, error);
         }
     }

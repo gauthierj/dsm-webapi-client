@@ -3,6 +3,7 @@ package net.jacqg.dsm.webapi.client.filestation.createfolder;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import net.jacqg.dsm.webapi.client.AbstractDsmServiceImpl;
+import net.jacqg.dsm.webapi.client.DsmWebApiResponseError;
 import net.jacqg.dsm.webapi.client.DsmWebapiRequest;
 import net.jacqg.dsm.webapi.client.DsmWebapiResponse;
 import net.jacqg.dsm.webapi.client.filestation.exception.CouldNotCreateFolderException;
@@ -10,6 +11,7 @@ import net.jacqg.dsm.webapi.client.filestation.filelist.File;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -55,13 +57,13 @@ public class CreateFolderServiceImpl extends AbstractDsmServiceImpl implements C
         }
 
         public List<File> getFolders() {
-            return folders;
+            return Collections.unmodifiableList(folders);
         }
     }
 
     public static class CreateFolderResponse extends DsmWebapiResponse<FolderList> {
 
-        public CreateFolderResponse(@JsonProperty("success") boolean success, @JsonProperty("data") FolderList data, @JsonProperty("error") Error error) {
+        public CreateFolderResponse(@JsonProperty("success") boolean success, @JsonProperty("data") FolderList data, @JsonProperty("error") DsmWebApiResponseError error) {
             super(success, data, error);
         }
     }

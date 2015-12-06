@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 
-public class AbstractDsmServiceImpl {
+public abstract class AbstractDsmServiceImpl {
 
     @Autowired
     private ApiInfoService apiInfoService;

@@ -11,6 +11,7 @@ public class ConsoleAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public LoginInformation getLoginInformation() {
+        //TODO replace this with JLine
         Scanner scanner = new Scanner(System.in);
         System.out.print("username: ");
         String username = scanner.nextLine();
