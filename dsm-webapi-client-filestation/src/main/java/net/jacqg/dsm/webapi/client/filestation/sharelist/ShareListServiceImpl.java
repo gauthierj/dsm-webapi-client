@@ -14,19 +14,37 @@ import java.util.Optional;
 @Component
 public class ShareListServiceImpl extends AbstractDsmServiceImpl implements ShareListService {
 
+    // API Infos
+    private static final String API_ID = "SYNO.FileStation.List";
+    private static final String API_VERSION = "1";
+
+    // API Methods
+    private static final String METHOD_LIST_SHARE = "list_share";
+
+    // Parameters
+    private static final String PARAMETER_ADDITIONAL = "additional";
+    private static final String PARAMETER_OFFSET = "offset";
+    private static final String PARAMETER_ONLYWRITABLE = "onlywritable";
+    private static final String PARAMETER_LIMIT = "limit";
+    private static final String PARAMETER_SORT_BY = "sort_by";
+    private static final String PARAMETER_SORT_DIRECTION = "sort_direction";
+
+    // Parameters values
+    private static final String PARAMETER_VALUE_ADDITIONAL = "real_path,owner,time,perm,mount_point_type,sync_share,volume_status";
+
     public ShareListServiceImpl() {
-        super("SYNO.FileStation.List");
+        super(API_ID);
     }
 
     @Override
-    public Share.ShareList list(PaginationAndSorting paginationAndSorting, Optional<Boolean> onlyWritable) {
-        DsmWebapiRequest request = new DsmWebapiRequest(getApiInfo().getApi(), "1", getApiInfo().getPath(), "list_share")
-                .parameter("offset", Integer.toString(paginationAndSorting.getOffset()))
-                .parameter("limit", Integer.toString(paginationAndSorting.getLimit()))
-                .parameter("sort_by", paginationAndSorting.getSortBy().getRepresentation())
-                .parameter("sort_direction", paginationAndSorting.getSortDirection().getRepresentation())
-                .parameter("onlywritable", onlyWritable.orElse(false).toString())
-                .parameter("additional", "real_path,owner,time,perm,mount_point_type,sync_share,volume_status");
+    public ShareList list(PaginationAndSorting paginationAndSorting, Optional<Boolean> onlyWritable) {
+        DsmWebapiRequest request = new DsmWebapiRequest(getApiInfo().getApi(), API_VERSION, getApiInfo().getPath(), METHOD_LIST_SHARE)
+                .parameter(PARAMETER_OFFSET, Integer.toString(paginationAndSorting.getOffset()))
+                .parameter(PARAMETER_LIMIT, Integer.toString(paginationAndSorting.getLimit()))
+                .parameter(PARAMETER_SORT_BY, paginationAndSorting.getSortBy().getRepresentation())
+                .parameter(PARAMETER_SORT_DIRECTION, paginationAndSorting.getSortDirection().getRepresentation())
+                .parameter(PARAMETER_ONLYWRITABLE, onlyWritable.orElse(false).toString())
+                .parameter(PARAMETER_ADDITIONAL, PARAMETER_VALUE_ADDITIONAL);
         ShareListResponse call = getDsmWebapiClient().call(request, ShareListResponse.class);
         return call.getData();
     }
@@ -41,9 +59,9 @@ public class ShareListServiceImpl extends AbstractDsmServiceImpl implements Shar
         return list(false);
     }
 
-    private static class ShareListResponse extends DsmWebapiResponse<Share.ShareList> {
+    private static class ShareListResponse extends DsmWebapiResponse<ShareList> {
 
-        public ShareListResponse(@JsonProperty("success") boolean success, @JsonProperty("data") Share.ShareList data, @JsonProperty("error") DsmWebApiResponseError error) {
+        public ShareListResponse(@JsonProperty("success") boolean success, @JsonProperty("data") ShareList data, @JsonProperty("error") DsmWebApiResponseError error) {
             super(success, data, error);
         }
     }

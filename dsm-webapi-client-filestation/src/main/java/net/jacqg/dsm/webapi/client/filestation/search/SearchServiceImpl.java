@@ -1,6 +1,5 @@
 package net.jacqg.dsm.webapi.client.filestation.search;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Joiner;
 import com.jayway.awaitility.core.ConditionTimeoutException;
@@ -10,8 +9,9 @@ import net.jacqg.dsm.webapi.client.DsmWebapiRequest;
 import net.jacqg.dsm.webapi.client.DsmWebapiResponse;
 import net.jacqg.dsm.webapi.client.filestation.common.FileType;
 import net.jacqg.dsm.webapi.client.filestation.common.PaginationAndSorting;
-import net.jacqg.dsm.webapi.client.filestation.exception.SearchTimeOutException;
-import net.jacqg.dsm.webapi.client.filestation.filelist.File;
+import net.jacqg.dsm.webapi.client.filestation.common.TaskId;
+import net.jacqg.dsm.webapi.client.filestation.exception.TaskTimeOutException;
+import net.jacqg.dsm.webapi.client.filestation.common.File;
 import net.jacqg.dsm.webapi.client.timezone.TimeZoneUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,6 +29,41 @@ import static com.jayway.awaitility.Awaitility.await;
 @Component
 public class SearchServiceImpl extends AbstractDsmServiceImpl implements SearchService {
 
+    // API Infos
+    private static final String API_ID = "SYNO.FileStation.Search";
+    private static final String API_VERSION = "1";
+
+    // API Methods
+    private static final String METHOD_CLEAN = "clean";
+    private static final String METHOD_START = "start";
+    private static final String METHOD_STOP = "stop";
+
+    // Parameters
+    private static final String PARAMETER_ADDITIONAL = "additional";
+    private static final String PARAMETER_ATIME_FROM = "atime_from";
+    private static final String PARAMETER_ATIME_TO = "atime_to";
+    private static final String PARAMETER_CRTIME_FROM = "crtime_from";
+    private static final String PARAMETER_CRTIME_TO = "crtime_to";
+    private static final String PARAMETER_EXTENSION = "extension";
+    private static final String PARAMETER_FILETYPE = "filetype";
+    private static final String PARAMETER_FOLDER_PATH = "folder_path";
+    private static final String PARAMETER_GROUP = "group";
+    private static final String PARAMETER_LIMIT = "limit";
+    private static final String PARAMETER_MTIME_FROM = "mtime_from";
+    private static final String PARAMETER_MTIME_TO = "mtime_to";
+    private static final String PARAMETER_OFFSET = "offset";
+    private static final String PARAMETER_OWNER = "owner";
+    private static final String PARAMETER_PATTERN = "pattern";
+    private static final String PARAMETER_RECURSIVE = "recursive";
+    private static final String PARAMETER_SIZE_FROM = "size_from";
+    private static final String PARAMETER_SIZE_TO = "size_to";
+    private static final String PARAMETER_SORT_DIRECTION = "sort_direction";
+    private static final String PARAMETER_SORT_BY = "sort_by";
+    private static final String PARAMETER_TASKID = "taskid";
+
+    // Parameters values
+    private static final String PARAMETER_VALUE_ADDITIONAL = "real_path,size,owner,time,perm,type";
+
     @Autowired
     private TimeZoneUtil timeZoneUtil;
 
@@ -38,7 +73,7 @@ public class SearchServiceImpl extends AbstractDsmServiceImpl implements SearchS
     private Function<LocalDateTime, String> localDateToTimeStringFunction;
 
     public SearchServiceImpl() {
-        super("SYNO.FileStation.Search");
+        super(API_ID);
     }
 
     @PostConstruct
@@ -48,22 +83,22 @@ public class SearchServiceImpl extends AbstractDsmServiceImpl implements SearchS
 
     @Override
     public String start(String searchedFolderPath, boolean recursive, SearchCriteria searchCriteria) {
-        DsmWebapiRequest request = new DsmWebapiRequest(getApiId(), "1", getApiInfo().getPath(), "start")
-                .parameter("folder_path", searchedFolderPath)
-                .parameter("recursive", Boolean.toString(recursive))
-                .optionalStringParameter("pattern", Joiner.on(',').join(searchCriteria.getPatterns()))
-                .optionalStringParameter("extension", Joiner.on(',').join(searchCriteria.getExtensions()))
-                .optionalParameter("filetype", searchCriteria.getFileType(), FileType::getRepresentation)
-                .optionalParameter("size_from", searchCriteria.getSizeFrom())
-                .optionalParameter("size_to", searchCriteria.getSizeTo())
-                .optionalParameter("mtime_from", searchCriteria.getLastModifiedTimeFrom(), localDateToTimeStringFunction)
-                .optionalParameter("mtime_to", searchCriteria.getLastModifiedTimeTo(), localDateToTimeStringFunction)
-                .optionalParameter("crtime_from", searchCriteria.getCreationTimeFrom(), localDateToTimeStringFunction)
-                .optionalParameter("crtime_to", searchCriteria.getCreationTimeTo(), localDateToTimeStringFunction)
-                .optionalParameter("atime_from", searchCriteria.getLastAccessTimeFrom(), localDateToTimeStringFunction)
-                .optionalParameter("atime_to", searchCriteria.getLastAccessTimeTo(), localDateToTimeStringFunction)
-                .optionalParameter("owner", searchCriteria.getOwnerUserName())
-                .optionalParameter("group", searchCriteria.getGroupName());
+        DsmWebapiRequest request = new DsmWebapiRequest(getApiId(), API_VERSION, getApiInfo().getPath(), METHOD_START)
+                .parameter(PARAMETER_FOLDER_PATH, searchedFolderPath)
+                .parameter(PARAMETER_RECURSIVE, Boolean.toString(recursive))
+                .optionalStringParameter(PARAMETER_PATTERN, Joiner.on(',').join(searchCriteria.getPatterns()))
+                .optionalStringParameter(PARAMETER_EXTENSION, Joiner.on(',').join(searchCriteria.getExtensions()))
+                .optionalParameter(PARAMETER_FILETYPE, searchCriteria.getFileType(), FileType::getRepresentation)
+                .optionalParameter(PARAMETER_SIZE_FROM, searchCriteria.getSizeFrom())
+                .optionalParameter(PARAMETER_SIZE_TO, searchCriteria.getSizeTo())
+                .optionalParameter(PARAMETER_MTIME_FROM, searchCriteria.getLastModifiedTimeFrom(), localDateToTimeStringFunction)
+                .optionalParameter(PARAMETER_MTIME_TO, searchCriteria.getLastModifiedTimeTo(), localDateToTimeStringFunction)
+                .optionalParameter(PARAMETER_CRTIME_FROM, searchCriteria.getCreationTimeFrom(), localDateToTimeStringFunction)
+                .optionalParameter(PARAMETER_CRTIME_TO, searchCriteria.getCreationTimeTo(), localDateToTimeStringFunction)
+                .optionalParameter(PARAMETER_ATIME_FROM, searchCriteria.getLastAccessTimeFrom(), localDateToTimeStringFunction)
+                .optionalParameter(PARAMETER_ATIME_TO, searchCriteria.getLastAccessTimeTo(), localDateToTimeStringFunction)
+                .optionalParameter(PARAMETER_OWNER, searchCriteria.getOwnerUserName())
+                .optionalParameter(PARAMETER_GROUP, searchCriteria.getGroupName());
         StartSearchResponse call = getDsmWebapiClient().call(request, StartSearchResponse.class);
         return call.getData().getTaskId();
     }
@@ -76,12 +111,12 @@ public class SearchServiceImpl extends AbstractDsmServiceImpl implements SearchS
     @Override
     public SearchResult getResult(String taskId, PaginationAndSorting paginationAndSorting) {
         DsmWebapiRequest request = new DsmWebapiRequest(getApiId(), "1", getApiInfo().getPath(), "list")
-                .parameter("taskid", taskId)
-                .parameter("offset", paginationAndSorting.getOffset())
-                .parameter("limit", paginationAndSorting.getLimit())
-                .parameter("sort_by", paginationAndSorting.getSortBy().getRepresentation())
-                .parameter("sort_direction", paginationAndSorting.getSortDirection().getRepresentation())
-                .parameter("additional", "real_path,size,owner,time,perm,type")
+                .parameter(PARAMETER_TASKID, taskId)
+                .parameter(PARAMETER_OFFSET, paginationAndSorting.getOffset())
+                .parameter(PARAMETER_LIMIT, paginationAndSorting.getLimit())
+                .parameter(PARAMETER_SORT_BY, paginationAndSorting.getSortBy().getRepresentation())
+                .parameter(PARAMETER_SORT_DIRECTION, paginationAndSorting.getSortDirection().getRepresentation())
+                .parameter(PARAMETER_ADDITIONAL, PARAMETER_VALUE_ADDITIONAL)
                 ;
         SearchResultResponse call = getDsmWebapiClient().call(request, SearchResultResponse.class);
         return call.getData();
@@ -94,8 +129,8 @@ public class SearchServiceImpl extends AbstractDsmServiceImpl implements SearchS
 
     @Override
     public void stop(List<String> taskIds) {
-        DsmWebapiRequest request = new DsmWebapiRequest(getApiId(), "1", getApiInfo().getPath(), "stop")
-                .parameter("taskid", Joiner.on(',').join(taskIds));
+        DsmWebapiRequest request = new DsmWebapiRequest(getApiId(), API_VERSION, getApiInfo().getPath(), METHOD_STOP)
+                .parameter(PARAMETER_TASKID, Joiner.on(',').join(taskIds));
         DsmWebapiResponse response = getDsmWebapiClient().call(request, DsmWebapiResponse.class);
         // TODO handle failure
     }
@@ -107,8 +142,8 @@ public class SearchServiceImpl extends AbstractDsmServiceImpl implements SearchS
 
     @Override
     public void clean(List<String> taskIds) {
-        DsmWebapiRequest request = new DsmWebapiRequest(getApiId(), "1", getApiInfo().getPath(), "clean")
-                .parameter("taskid", Joiner.on(',').join(taskIds));
+        DsmWebapiRequest request = new DsmWebapiRequest(getApiId(),  API_VERSION, getApiInfo().getPath(), METHOD_CLEAN)
+                .parameter(PARAMETER_TASKID, Joiner.on(',').join(taskIds));
         DsmWebapiResponse response = getDsmWebapiClient().call(request, DsmWebapiResponse.class);
         // TODO handle failure
     }
@@ -128,37 +163,9 @@ public class SearchServiceImpl extends AbstractDsmServiceImpl implements SearchS
             return getResult(taskId);
         } catch (ConditionTimeoutException e) {
             stop(taskId);
-            throw new SearchTimeOutException(e);
+            throw new TaskTimeOutException(e);
         } finally {
             clean(taskId);
-        }
-    }
-
-    public static class TaskId {
-
-        private final String taskId;
-
-        @JsonCreator
-        public TaskId(@JsonProperty("taskid") String taskId) {
-            this.taskId = taskId;
-        }
-
-        public String getTaskId() {
-            return taskId;
-        }
-    }
-
-    public static class SearchResult extends File.FileList {
-
-        private final boolean finished;
-
-        public SearchResult(@JsonProperty("finished") boolean finished, @JsonProperty("total") int total, @JsonProperty("offset") int offset, @JsonProperty("files") List<File> files) {
-            super(total, offset, files);
-            this.finished = finished;
-        }
-
-        public boolean isFinished() {
-            return finished;
         }
     }
 

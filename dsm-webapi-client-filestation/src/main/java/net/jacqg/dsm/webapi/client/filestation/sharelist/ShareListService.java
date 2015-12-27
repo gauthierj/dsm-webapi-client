@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface ShareListService {
 
-    Share.ShareList list(PaginationAndSorting paginationAndSorting, Optional<Boolean> onlyWritable);
+    ShareList list(PaginationAndSorting paginationAndSorting, Optional<Boolean> onlyWritable);
 
     List<Share> list(boolean onlyWritable);
 

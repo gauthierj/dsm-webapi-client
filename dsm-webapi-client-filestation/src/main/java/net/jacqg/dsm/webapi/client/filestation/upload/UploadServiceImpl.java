@@ -29,6 +29,8 @@ public class UploadServiceImpl extends AbstractDsmServiceImpl implements UploadS
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UploadServiceImpl.class);
 
+    private static final String API_ID = "SYNO.FileStation.Upload";
+
     private static final String DELIMITER = "--AaB03x";
     private static final String CRLF = "\r\n";
 
@@ -45,7 +47,7 @@ public class UploadServiceImpl extends AbstractDsmServiceImpl implements UploadS
     private ObjectMapper objectMapper;
 
     public UploadServiceImpl() {
-        super("SYNO.FileStation.Upload");
+        super(API_ID);
     }
 
     @Override

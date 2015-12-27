@@ -15,20 +15,34 @@ import java.net.URI;
 @Component
 public class DownloadServiceImpl extends AbstractDsmServiceImpl implements DownloadService {
 
+    // API Infos
+    private static final String API_ID = "SYNO.FileStation.Download";
+    private static final String API_VERSION = "1";
+
+    // API Methods
+    private static final String METHOD_DOWNLOAD = "download";
+
+    // Parameters
+    private static final String PARAMETER_MODE = "mode";
+    private static final String PARAMETER_PATH = "path";
+
+    // Parameters values
+    private static final String PARAMETER_VALUE_OPEN = "open";
+
     @Autowired
     @Qualifier("downloadRestTemplate")
     private RestTemplate restTemplate;
 
     public DownloadServiceImpl() {
-        super("SYNO.FileStation.Download");
+        super(API_ID);
     }
 
     @Override
     public byte[] download(String path) {
         try {
-            DsmWebapiRequest request = new DsmWebapiRequest(getApiInfo().getApi(), "1", getApiInfo().getPath(), "download")
-                    .parameter("path", path)
-                    .parameter("mode", "open");
+            DsmWebapiRequest request = new DsmWebapiRequest(getApiInfo().getApi(), API_VERSION, getApiInfo().getPath(), METHOD_DOWNLOAD)
+                    .parameter(PARAMETER_PATH, path)
+                    .parameter(PARAMETER_MODE, PARAMETER_VALUE_OPEN);
             URI uri = getDsmWebapiClient().buildUri(request);
             ResponseEntity<byte[]> response = restTemplate.getForEntity(uri, byte[].class);
             return response.getBody();

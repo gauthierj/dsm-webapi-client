@@ -2,6 +2,7 @@ package net.jacqg.dsm.webapi.client;
 
 import net.jacqg.dsm.webapi.client.apiinfo.ApiInfo;
 import net.jacqg.dsm.webapi.client.apiinfo.ApiInfoService;
+import net.jacqg.dsm.webapi.client.exception.DsmWebApiErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;

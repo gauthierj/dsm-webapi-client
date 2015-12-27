@@ -1,7 +1,7 @@
 package net.jacqg.dsm.webapi.client.filestation.search;
 
 import net.jacqg.dsm.webapi.client.filestation.common.PaginationAndSorting;
-import net.jacqg.dsm.webapi.client.filestation.filelist.File;
+import net.jacqg.dsm.webapi.client.filestation.common.File;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ public interface SearchService {
 
     boolean isFinished(String taskId);
 
-    SearchServiceImpl.SearchResult getResult(String taskId, PaginationAndSorting paginationAndSorting);
+    SearchResult getResult(String taskId, PaginationAndSorting paginationAndSorting);
 
     List<File> getResult(String taskId);
 

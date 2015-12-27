@@ -3,7 +3,7 @@ package net.jacqg.dsm.webapi.client.filestation.createfolder;
 import com.google.common.base.Strings;
 import net.jacqg.dsm.webapi.client.AbstractTest;
 import net.jacqg.dsm.webapi.client.filestation.exception.CouldNotCreateFolderException;
-import net.jacqg.dsm.webapi.client.filestation.filelist.File;
+import net.jacqg.dsm.webapi.client.filestation.common.File;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class CreateFolderServiceTest extends AbstractTest {
 

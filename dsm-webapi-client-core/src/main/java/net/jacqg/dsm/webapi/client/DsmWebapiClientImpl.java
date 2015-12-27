@@ -1,6 +1,7 @@
 package net.jacqg.dsm.webapi.client;
 
 import net.jacqg.dsm.webapi.client.exception.BadRequestException;
+import net.jacqg.dsm.webapi.client.exception.DsmWebApiErrorException;
 import net.jacqg.dsm.webapi.client.exception.PermissionDeniedException;
 import net.jacqg.dsm.webapi.client.exception.SessionExpiredException;
 import net.jacqg.dsm.webapi.client.exception.UnknownErrorException;
@@ -24,8 +25,13 @@ public class DsmWebapiClientImpl implements DsmWebapiClient {
 
     @Override
     public <T extends DsmWebapiResponse<?>> T call(DsmWebapiRequest request, Class<T> responseType) {
+        return call(request, responseType, null);
+    }
+
+    @Override
+    public <T extends DsmWebapiResponse<?>> T call(DsmWebapiRequest request, Class<T> responseType, ErrorHandler errorHandler) {
         T response = restTemplate.getForObject(buildUri(request), responseType);
-        handleGenericErrors(response);
+        handleFailure(request, errorHandler, response);
         return response;
     }
 
@@ -51,6 +57,15 @@ public class DsmWebapiClientImpl implements DsmWebapiClient {
         return createUriQuietly(url, queryStart);
     }
 
+    private <T extends DsmWebapiResponse<?>> void handleFailure(DsmWebapiRequest request, ErrorHandler errorHandler, T response) {
+        if(!response.isSuccess()) {
+            int code = response.getError().getCode();
+            handleGenericErrors(response);
+            handleSpecificErrorsIfNeeded(request, errorHandler, response);
+            throw new DsmWebApiErrorException(String.format("An unexpected error has occured: %s", code), code);
+        }
+    }
+
     private <T extends DsmWebapiResponse<?>> void handleGenericErrors(T response) {
         if(!response.isSuccess()) {
             switch (response.getError().getCode()) {
@@ -73,6 +88,12 @@ public class DsmWebapiClientImpl implements DsmWebapiClient {
                 default:
                     //skip
             }
+        }
+    }
+
+    private <T extends DsmWebapiResponse<?>> void handleSpecificErrorsIfNeeded(DsmWebapiRequest request, ErrorHandler errorHandler, T response) {
+        if(errorHandler != null) {
+            errorHandler.handleError(request, response.getError());
         }
     }
 

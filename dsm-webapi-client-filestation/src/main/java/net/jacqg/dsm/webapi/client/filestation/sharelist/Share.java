@@ -40,13 +40,4 @@ public class Share {
         return properties;
     }
 
-    public static class ShareList extends PaginatedList<Share> {
-
-        @JsonCreator
-        public ShareList(@JsonProperty("total") int total,
-                         @JsonProperty("offset") int offset,
-                         @JsonProperty("shares") List<Share> shares) {
-            super(total, offset, shares);
-        }
-    }
 }

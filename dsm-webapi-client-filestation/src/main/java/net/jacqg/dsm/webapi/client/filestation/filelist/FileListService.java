@@ -1,5 +1,6 @@
 package net.jacqg.dsm.webapi.client.filestation.filelist;
 
+import net.jacqg.dsm.webapi.client.filestation.common.File;
 import net.jacqg.dsm.webapi.client.filestation.common.FileType;
 import net.jacqg.dsm.webapi.client.filestation.common.PaginationAndSorting;
 

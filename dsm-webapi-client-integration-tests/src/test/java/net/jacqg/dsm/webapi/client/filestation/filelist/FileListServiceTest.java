@@ -1,12 +1,12 @@
 package net.jacqg.dsm.webapi.client.filestation.filelist;
 
 import net.jacqg.dsm.webapi.client.AbstractTest;
+import net.jacqg.dsm.webapi.client.filestation.common.File;
 import net.jacqg.dsm.webapi.client.filestation.exception.FileNotFoundException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
 

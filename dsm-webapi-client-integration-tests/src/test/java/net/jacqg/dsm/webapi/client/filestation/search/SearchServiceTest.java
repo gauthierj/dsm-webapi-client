@@ -1,7 +1,7 @@
 package net.jacqg.dsm.webapi.client.filestation.search;
 
 import net.jacqg.dsm.webapi.client.AbstractTest;
-import net.jacqg.dsm.webapi.client.filestation.filelist.File;
+import net.jacqg.dsm.webapi.client.filestation.common.File;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

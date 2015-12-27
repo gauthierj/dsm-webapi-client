@@ -6,8 +6,9 @@ import net.jacqg.dsm.webapi.client.AbstractDsmServiceImpl;
 import net.jacqg.dsm.webapi.client.DsmWebApiResponseError;
 import net.jacqg.dsm.webapi.client.DsmWebapiRequest;
 import net.jacqg.dsm.webapi.client.DsmWebapiResponse;
+import net.jacqg.dsm.webapi.client.ErrorHandler;
 import net.jacqg.dsm.webapi.client.filestation.exception.CouldNotCreateFolderException;
-import net.jacqg.dsm.webapi.client.filestation.filelist.File;
+import net.jacqg.dsm.webapi.client.filestation.common.File;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -17,32 +18,40 @@ import java.util.List;
 @Component
 public class CreateFolderServiceImpl extends AbstractDsmServiceImpl implements CreateFolderService {
 
+    // API Infos
+    private static final String API_ID = "SYNO.FileStation.CreateFolder";
+    private static final String API_VERSION = "1";
+
+    // API Methods
+    private static final String METHOD_CREATE = "create";
+
+    // Parameters
+    private static final String PARAMETER_ADDITIONAL = "additional";
+    private static final String PARAMETER_FOLDER_PATH = "folder_path";
+    private static final String PARAMETER_FORCE_PARENT = "force_parent";
+    private static final String PARAMETER_NAME = "name";
+
+    // Parameters values
+    private static final String PARAMETER_VALUE_ADDITIONAL = "real_path,size,owner,time,perm,type";
+
     public CreateFolderServiceImpl() {
-        super("SYNO.FileStation.CreateFolder");
+        super(API_ID);
     }
 
     @Override
-    public void createFolder(String parentPath, String name) {
-        createFolder(parentPath, name, false);
+    public File createFolder(String parentPath, String name) {
+        return createFolder(parentPath, name, false);
     }
 
     @Override
     public File createFolder(String parentPath, String name, boolean createParents) {
-        DsmWebapiRequest request = new DsmWebapiRequest(getApiInfo().getApi(), "1", getApiInfo().getPath(), "create")
-                .parameter("folder_path", parentPath)
-                .parameter("name", name)
-                .parameter("force_parent", createParents)
-                .parameter("additional", "real_path,size,owner,time,perm,type");
-        CreateFolderResponse response = getDsmWebapiClient().call(request, CreateFolderResponse.class);
-        handleErrors(parentPath, name, createParents, response);
+        DsmWebapiRequest request = new DsmWebapiRequest(getApiInfo().getApi(), API_VERSION, getApiInfo().getPath(), METHOD_CREATE)
+                .parameter(PARAMETER_FOLDER_PATH, parentPath)
+                .parameter(PARAMETER_NAME, name)
+                .parameter(PARAMETER_FORCE_PARENT, createParents)
+                .parameter(PARAMETER_ADDITIONAL, PARAMETER_VALUE_ADDITIONAL);
+        CreateFolderResponse response = getDsmWebapiClient().call(request, CreateFolderResponse.class, new CreateFolderErrorHandler());
         return response.getData().getFolders().get(0);
-    }
-
-    private void handleErrors(String parentPath, String name, boolean createParents, CreateFolderResponse response) {
-        if(!response.isSuccess()) {
-            int errorCode = response.getError().getCode();
-            throw new CouldNotCreateFolderException(parentPath, name, createParents, errorCode);
-        }
     }
 
     public static class FolderList {
@@ -65,6 +74,18 @@ public class CreateFolderServiceImpl extends AbstractDsmServiceImpl implements C
 
         public CreateFolderResponse(@JsonProperty("success") boolean success, @JsonProperty("data") FolderList data, @JsonProperty("error") DsmWebApiResponseError error) {
             super(success, data, error);
+        }
+    }
+
+    public static class CreateFolderErrorHandler implements ErrorHandler {
+
+        @Override
+        public void handleError(DsmWebapiRequest request, DsmWebApiResponseError error) {
+            throw new CouldNotCreateFolderException(
+                    request.getParameters().get(PARAMETER_FOLDER_PATH),
+                    request.getParameters().get(PARAMETER_NAME),
+                    Boolean.valueOf(request.getParameters().get(PARAMETER_FORCE_PARENT)),
+                    error.getCode());
         }
     }
 }

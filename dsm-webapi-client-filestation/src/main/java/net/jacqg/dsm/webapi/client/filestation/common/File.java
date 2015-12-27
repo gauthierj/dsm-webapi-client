@@ -1,8 +1,8 @@
-package net.jacqg.dsm.webapi.client.filestation.filelist;
+package net.jacqg.dsm.webapi.client.filestation.common;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import net.jacqg.dsm.webapi.client.filestation.common.PaginatedList;
+import net.jacqg.dsm.webapi.client.filestation.filelist.FileProperties;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -11,13 +11,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class FileStationInformationServiceImpl extends AbstractDsmServiceImpl implements FileStationInformationService {
 
+    // API Infos
+    private static final String API_ID = "SYNO.FileStation.Info";
+    private static final String API_VERSION = "1";
+
+    // API Methods
+    private static final String METHOD_GET_INFO = "getinfo";
+
     public FileStationInformationServiceImpl() {
-        super("SYNO.FileStation.Info");
+        super(API_ID);
     }
 
     @Override
     public FileStationInformation getFileStationInformation() {
-        FileStationInformationResponse response = getDsmWebapiClient().call(new DsmWebapiRequest(getApiInfo().getApi(), "1", getApiInfo().getPath(), "getinfo"), FileStationInformationResponse.class);
+        FileStationInformationResponse response = getDsmWebapiClient().call(new DsmWebapiRequest(getApiInfo().getApi(), API_VERSION, getApiInfo().getPath(), METHOD_GET_INFO), FileStationInformationResponse.class);
         return response.getData();
     }
 

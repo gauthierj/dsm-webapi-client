@@ -28,7 +28,8 @@ public class LoggingInterceptor implements ClientHttpRequestInterceptor {
             LOGGER.debug("Request body: {}", new String(body));
             LOGGER.debug("Response body: {}", IOUtils.toString(response.getBody()));
         } catch (IOException e) {
-            throw new DsmWebApiClientException("Could not read response", e);
+            // The logger should not interfere with exceptions
+            LOGGER.warn("Exception occurred while logging response", e);
         }
     }
 }
