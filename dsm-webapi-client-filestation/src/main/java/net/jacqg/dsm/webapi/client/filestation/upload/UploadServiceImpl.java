@@ -6,6 +6,7 @@ import net.jacqg.dsm.webapi.client.DsmUrlProvider;
 import net.jacqg.dsm.webapi.client.DsmWebapiResponse;
 import net.jacqg.dsm.webapi.client.authentication.AuthenticationHolder;
 import net.jacqg.dsm.webapi.client.exception.DsmWebApiClientException;
+import net.jacqg.dsm.webapi.client.filestation.common.OverwriteBehavior;
 import net.jacqg.dsm.webapi.client.filestation.exception.FileAlreadyExistsException;
 import net.jacqg.dsm.webapi.client.timezone.TimeZoneUtil;
 import org.apache.http.client.fluent.Content;
@@ -61,9 +62,9 @@ public class UploadServiceImpl extends AbstractDsmServiceImpl implements UploadS
         if(!response.isSuccess()) {
             switch (response.getError().getCode()) {
                 case 1805:
-                    throw new FileAlreadyExistsException(1805, uploadRequest.getParentFolderPath(), uploadRequest.getFileName());
+                    throw new FileAlreadyExistsException(response.getError(), uploadRequest.getParentFolderPath(), uploadRequest.getFileName());
                 case 414:
-                    throw new FileAlreadyExistsException(414, uploadRequest.getParentFolderPath(), uploadRequest.getFileName());
+                    throw new FileAlreadyExistsException(response.getError(), uploadRequest.getParentFolderPath(), uploadRequest.getFileName());
                     // TODO handle other cases
             }
         }
@@ -106,7 +107,7 @@ public class UploadServiceImpl extends AbstractDsmServiceImpl implements UploadS
         return request.toString();
     }
 
-    private void appendOverwriteBehaviorIfNeeded(StringBuilder request, UploadRequest.OverwriteBehavior overwriteBehavior) {
+    private void appendOverwriteBehaviorIfNeeded(StringBuilder request, OverwriteBehavior overwriteBehavior) {
         switch (overwriteBehavior) {
             case OVERWRITE:
                 appendParameter(request, "overwrite", "true");

@@ -76,7 +76,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private static class LoginErrorHandler implements ErrorHandler {
         @Override
         public void handleError(DsmWebapiRequest request, DsmWebApiResponseError error) {
-            throw new InvalidLoginException(error.getCode());
+            throw new InvalidLoginException(error);
         }
     }
 }

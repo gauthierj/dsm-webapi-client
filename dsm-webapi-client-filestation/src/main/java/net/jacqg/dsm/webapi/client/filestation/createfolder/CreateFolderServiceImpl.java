@@ -85,7 +85,7 @@ public class CreateFolderServiceImpl extends AbstractDsmServiceImpl implements C
                     request.getParameters().get(PARAMETER_FOLDER_PATH),
                     request.getParameters().get(PARAMETER_NAME),
                     Boolean.valueOf(request.getParameters().get(PARAMETER_FORCE_PARENT)),
-                    error.getCode());
+                    error);
         }
     }
 }

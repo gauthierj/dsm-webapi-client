@@ -1,14 +1,12 @@
 package net.jacqg.dsm.webapi.client.filestation.upload;
 
+import net.jacqg.dsm.webapi.client.filestation.common.OverwriteBehavior;
+
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Optional;
 
 public class UploadRequest {
-
-    public enum OverwriteBehavior {
-        OVERWRITE, SKIP, ERROR
-    }
 
     private String parentFolderPath;
     private String fileName;

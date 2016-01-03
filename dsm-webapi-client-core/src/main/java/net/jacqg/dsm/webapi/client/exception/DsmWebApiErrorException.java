@@ -1,25 +1,27 @@
 package net.jacqg.dsm.webapi.client.exception;
 
+import net.jacqg.dsm.webapi.client.DsmWebApiResponseError;
+
 public class DsmWebApiErrorException extends DsmWebApiClientException {
 
-    private final int errorCode;
+    private final DsmWebApiResponseError error;
 
-    public DsmWebApiErrorException(String message, int errorCode) {
+    public DsmWebApiErrorException(String message, DsmWebApiResponseError error) {
         super(message);
-        this.errorCode = errorCode;
+        this.error = error;
     }
 
-    public DsmWebApiErrorException(String message, Throwable cause, int errorCode) {
+    public DsmWebApiErrorException(String message, Throwable cause, DsmWebApiResponseError error) {
         super(message, cause);
-        this.errorCode = errorCode;
+        this.error = error;
     }
 
-    public DsmWebApiErrorException(Throwable cause, int errorCode) {
+    public DsmWebApiErrorException(Throwable cause, DsmWebApiResponseError error) {
         super(cause);
-        this.errorCode = errorCode;
+        this.error = error;
     }
 
-    public int getErrorCode() {
-        return errorCode;
+    public DsmWebApiResponseError getError() {
+        return error;
     }
 }

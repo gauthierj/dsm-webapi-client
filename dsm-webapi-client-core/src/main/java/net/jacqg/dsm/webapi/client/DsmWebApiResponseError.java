@@ -45,4 +45,13 @@ public class DsmWebApiResponseError {
     public String getDetailValue(String key) {
         return details.get(key);
     }
+
+    @Override
+    public String toString() {
+        return "DsmWebApiResponseError{" +
+                "code=" + code +
+                ", errors=" + errors +
+                ", details=" + details +
+                '}';
+    }
 }

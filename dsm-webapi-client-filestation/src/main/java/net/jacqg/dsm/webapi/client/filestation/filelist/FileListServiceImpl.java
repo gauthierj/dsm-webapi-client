@@ -63,7 +63,7 @@ public class FileListServiceImpl extends AbstractDsmServiceImpl implements FileL
                 .parameter(PARAMETER_FILETYPE, fileType.orElse(FileType.ALL).getRepresentation())
                 .parameter(PARAMETER_GOTO_PATH, gotoPath.orElse(""))
                 .parameter(PARAMETER_ADDITIONAL, PARAMETER_VALUE_ADDITIONAL);
-        FileListResponse response = getDsmWebapiClient().call(request, FileListResponse.class, new MyErrorHandler(folderPath));
+        FileListResponse response = getDsmWebapiClient().call(request, FileListResponse.class, new FileListErrorHandler(folderPath));
         return response.getData();
     }
 
@@ -106,10 +106,10 @@ public class FileListServiceImpl extends AbstractDsmServiceImpl implements FileL
         }
     }
 
-    private static class MyErrorHandler implements ErrorHandler {
+    private static class FileListErrorHandler implements ErrorHandler {
         private final String folderPath;
 
-        public MyErrorHandler(String folderPath) {
+        public FileListErrorHandler(String folderPath) {
             this.folderPath = folderPath;
         }
 

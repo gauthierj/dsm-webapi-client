@@ -4,21 +4,22 @@ import net.jacqg.dsm.webapi.client.DsmWebApiResponseError;
 import net.jacqg.dsm.webapi.client.exception.DsmWebApiErrorException;
 import net.jacqg.dsm.webapi.client.filestation.common.ErrorCodes;
 
-public class FileNotFoundException extends DsmWebApiErrorException {
+public class CouldNotRenameException extends DsmWebApiErrorException {
 
     private final String path;
+    private final String name;
 
-    public FileNotFoundException(String path) {
-        super("No such file or directory", null);
+    public CouldNotRenameException(String path, String name, DsmWebApiResponseError error) {
+        super(String.format("Could not rename. Path: %s, name: %s", path, name), error);
         this.path = path;
-    }
-
-    public FileNotFoundException(Throwable cause, String path) {
-        super("No such file or directory", cause, null);
-        this.path = path;
+        this.name = name;
     }
 
     public String getPath() {
         return path;
+    }
+
+    public String getName() {
+        return name;
     }
 }

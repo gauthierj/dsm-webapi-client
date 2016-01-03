@@ -99,7 +99,7 @@ public class DirSizeServiceImpl extends AbstractDsmServiceImpl implements DirSiz
         @Override
         public void handleError(DsmWebapiRequest request, DsmWebApiResponseError error) {
             if(error.getCode() == ErrorCodes.ERROR_CODE_NO_SUCH_TASK) {
-                throw new NoSuchTaskException();
+                throw new NoSuchTaskException(error);
             }
         }
     }

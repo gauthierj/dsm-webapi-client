@@ -62,29 +62,30 @@ public class DsmWebapiClientImpl implements DsmWebapiClient {
             int code = response.getError().getCode();
             handleGenericErrors(response);
             handleSpecificErrorsIfNeeded(request, errorHandler, response);
-            throw new DsmWebApiErrorException(String.format("An unexpected error has occured: %s", code), code);
+            throw new DsmWebApiErrorException(String.format("An unexpected error has occured: %s", code), response.getError());
         }
     }
 
     private <T extends DsmWebapiResponse<?>> void handleGenericErrors(T response) {
         if(!response.isSuccess()) {
-            switch (response.getError().getCode()) {
+            DsmWebApiResponseError error = response.getError();
+            switch (error.getCode()) {
                 case GenericErrorCodes.ERROR_CODE_UNKNOWN_ERROR:
-                    throw new UnknownErrorException();
+                    throw new UnknownErrorException(error);
                 case GenericErrorCodes.ERROR_CODE_NO_PARAMETER:
-                    throw new BadRequestException("No parameter of API, method or version", GenericErrorCodes.ERROR_CODE_NO_PARAMETER);
+                    throw new BadRequestException("No parameter of API, method or version", error);
                 case GenericErrorCodes.ERROR_CODE_API_DOES_NOT_EXISTS:
-                    throw new BadRequestException("The requested API does not exist", GenericErrorCodes.ERROR_CODE_API_DOES_NOT_EXISTS);
+                    throw new BadRequestException("The requested API does not exist", error);
                 case GenericErrorCodes.ERROR_CODE_METHOD_DOES_NOT_EXISTS:
-                    throw new BadRequestException("The requested method does not exist", GenericErrorCodes.ERROR_CODE_METHOD_DOES_NOT_EXISTS);
+                    throw new BadRequestException("The requested method does not exist", error);
                 case GenericErrorCodes.ERROR_CODE_VERSION_DOES_NOT_SUPPORT_FEATURE:
-                    throw new BadRequestException("The requested version does not support the functionality", GenericErrorCodes.ERROR_CODE_VERSION_DOES_NOT_SUPPORT_FEATURE);
+                    throw new BadRequestException("The requested version does not support the functionality", error);
                 case GenericErrorCodes.ERROR_CODE_PERMISSION_DENIED:
-                    throw new PermissionDeniedException();
+                    throw new PermissionDeniedException(error);
                 case GenericErrorCodes.ERROR_CODE_SESSION_TIMEOUT:
-                    throw new SessionExpiredException("Session timeout", GenericErrorCodes.ERROR_CODE_SESSION_TIMEOUT);
+                    throw new SessionExpiredException("Session timeout", error);
                 case GenericErrorCodes.ERROR_CODE_DUPLICATE_LOGIN:
-                    throw new SessionExpiredException("Session interrupted by duplicate login", GenericErrorCodes.ERROR_CODE_DUPLICATE_LOGIN);
+                    throw new SessionExpiredException("Session interrupted by duplicate login", error);
                 default:
                     //skip
             }

@@ -1,8 +1,8 @@
 package net.jacqg.dsm.webapi.client.filestation.dirsize;
 
-import junit.framework.Assert;
 import net.jacqg.dsm.webapi.client.AbstractTest;
 import net.jacqg.dsm.webapi.client.filestation.exception.NoSuchTaskException;
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

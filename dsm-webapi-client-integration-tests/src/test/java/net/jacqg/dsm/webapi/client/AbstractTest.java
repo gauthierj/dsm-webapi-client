@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -20,6 +21,7 @@ import java.nio.file.Paths;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfiguration.class)
 @TestPropertySource("classpath:application-test.properties")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public abstract class AbstractTest {
 
     private static final String FILE_RESOURCES_ROOT = "/file-resources";
@@ -33,7 +35,7 @@ public abstract class AbstractTest {
     private Path shareMountPoint;
 
     @Before
-    public void setUp() throws URISyntaxException, IOException {
+    public void setUp() throws URISyntaxException, IOException, InterruptedException {
         shareMountPoint = Paths.get(shareMountPointPath);
         Assert.assertTrue(Files.exists(shareMountPoint));
         Assert.assertTrue(Files.isWritable(shareMountPoint));
@@ -57,9 +59,23 @@ public abstract class AbstractTest {
         return shareMountPoint;
     }
 
-    private void createFileStructure() throws URISyntaxException, IOException {
+    private void createFileStructure() throws URISyntaxException, IOException, InterruptedException {
         URL resource = AbstractTest.class.getResource(FILE_RESOURCES_ROOT);
         Path fileResourcesRoot = Paths.get(resource.toURI());
-        FileUtils.copyDirectory(fileResourcesRoot.toFile(), shareMountPoint.toFile());
+        int i = 0;
+        while (i < 5) {
+            try {
+                FileUtils.copyDirectory(fileResourcesRoot.toFile(), shareMountPoint.toFile());
+                i = 5;
+            } catch (IOException e) {
+                if (i < 4) {
+                    Thread.sleep(1000 + i * i * 1000);
+                    i++;
+                } else {
+                    throw new IllegalStateException("Could not create file structure", e);
+                }
+            }
+        }
     }
+
 }

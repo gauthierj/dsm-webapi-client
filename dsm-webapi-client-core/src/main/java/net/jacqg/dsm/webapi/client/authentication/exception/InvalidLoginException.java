@@ -1,5 +1,6 @@
 package net.jacqg.dsm.webapi.client.authentication.exception;
 
+import net.jacqg.dsm.webapi.client.DsmWebApiResponseError;
 import net.jacqg.dsm.webapi.client.exception.DsmWebApiErrorException;
 
 public class InvalidLoginException extends DsmWebApiErrorException {
@@ -10,8 +11,8 @@ public class InvalidLoginException extends DsmWebApiErrorException {
     public static final int ERROR_CODE_2_STEP_VERIFICATION_CODE_REQUIRED = 403;
     public static final int ERROR_CODE_2_STEP_VERIFICATION_CODE_AUTHENTICATION_FAILED = 404;
 
-    public InvalidLoginException(int errorCode) {
-        super(errorCode + ": " + getMessage(errorCode), errorCode);
+    public InvalidLoginException(DsmWebApiResponseError error) {
+        super(error.getCode()+ ": " + getMessage(error.getCode()), error);
     }
 
     private static String getMessage(int errorCode) {
