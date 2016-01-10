@@ -15,7 +15,7 @@ public class SearchServiceTest extends AbstractTest {
 
     @Test
     public void testSearch() {
-        SearchCriteria build = SearchCriteriaBuilder
+        SearchCriteria build = SearchCriteria.SearchCriteriaBuilder
                 .create()
                 .pattern("test")
                 .build();
