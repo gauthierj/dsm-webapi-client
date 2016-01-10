@@ -33,6 +33,13 @@
         <url>git@github.com:gauthierj/dsm-webapi-client</url>
     </scm>
 
+    <distributionManagement>
+        <repository>
+            <id>myMavenRepo</id>
+            <url>${myMavenRepo.write.url}</url>
+        </repository>
+    </distributionManagement>
+
     <properties>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
