@@ -156,6 +156,10 @@ Implements FileStation APIs:
 - SYNO.FileStation.Download: `DownloadService`
 - SYNO.FileStation.Upload: `UploadService`
 - SYNO.FileStation.CreateFolder: `CreateFolderService`
+- SYNO.FileStation.CopyMove: `CopyMoveService`
+- SYNO.FileStation.Delete: `DeleteService`
+- SYNO.FileStation.DirSize: `DirSizeService`
+- SYNO.FileStation.Rename: `RenameService`
 
 Future development :
 - Missing FileStation APIs
