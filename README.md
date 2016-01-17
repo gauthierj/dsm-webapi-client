@@ -1,7 +1,10 @@
 # dsm-webapi-client
+
 A java based Synology DSM Webapi client.
 
-Warning : WORK IN PROGRESS
+Latest stable release is **1.0.0-M1**. It allows all basic files operation.
+
+Advanced operations (MD5, compress/uncompress, ...) will be released later this year.
 
 # Build
 
@@ -32,13 +35,24 @@ Add the `dsm-webapi-client-filestation` as a Maven dependency :
 
 ```xml
 <dependency>
-  <groupId>net.jacqg</groupId>
+  <groupId>com.github.gauthierj.dsm-webapi-client</groupId>
   <artifactId>dsm-webapi-client-filestation</artifactId>
-  <scope>test</scope>
+  <version>1.0.0-M1</version>
 </dependency>
 ```
 
-Please note that this project is not deployed into any public Maven repository at this time. The entire project must therefore be deployed to your local / private repository.
+The project is available in the following public repository:
+
+```xml
+<repository>
+    <snapshots>
+        <enabled>false</enabled>
+    </snapshots>
+    <id>bintray-gauthierj-maven</id>
+    <name>bintray</name>
+    <url>http://dl.bintray.com/gauthierj/maven</url>
+</repository>
+```
 
 ## Spring 
 
