@@ -35,8 +35,9 @@
 
     <distributionManagement>
         <repository>
-            <id>myMavenRepo</id>
-            <url>${myMavenRepo.write.url}</url>
+            <id>bintray-gauthierj-maven</id>
+            <name>gauthierj-maven</name>
+            <url>https://api.bintray.com/maven/gauthierj/maven/dsm-webapi-client/;publish=1</url>
         </repository>
     </distributionManagement>
 
