@@ -7,9 +7,7 @@ Latest stable release is **1.0.0-M1**. It allows all basic files operation.
 Roadmap :
 - **1.0.0-M2**: extract Spring configuration in a separate project and allow to use the framework without Spring at all. Expected for end of March 2016
 - **1.0.0-FINAL**: missing FileStation APIs (Favorites, thumbnail, MD5, compress / uncompress). Expected for end of June 2016.
-- **2.0.0-FINAL**: DownloadStation APIs. Expected for end of december 2016 (some milestone may be released earlier).
-
-Advanced operations (MD5, compress/uncompress, ...) will be released later this year.
+- **2.0.0-FINAL**: DownloadStation APIs. Expected for end of december 2016 (some milestones may be released earlier).
 
 # Build
 
