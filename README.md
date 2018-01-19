@@ -1,4 +1,5 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/c8fd28af683448d88afcb40ffb6f27f0)](https://www.codacy.com/app/gauthierj/dsm-webapi-client?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=gauthierj/dsm-webapi-client&amp;utm_campaign=Badge_Grade)
+[![Build Status](https://travis-ci.org/gauthierj/dsm-webapi-client.svg?branch=develop)](https://travis-ci.org/gauthierj/dsm-webapi-client)
 
 # dsm-webapi-client
 
